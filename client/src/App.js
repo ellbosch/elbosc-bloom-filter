@@ -18,8 +18,7 @@ function App() {
   return (
     <div>
       <h1>Hi</h1>
-      {wordsList}
-      {/* <BloomFilter /> */}
+      <BloomFilter wordsList={wordsList} />
     </div>
   );
 }
