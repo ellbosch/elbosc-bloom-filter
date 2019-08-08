@@ -1,5 +1,5 @@
 {
-  "name": "elbosc-bloom-filter",
+  "name": "client",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

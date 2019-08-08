@@ -1,7 +1,4 @@
-# Build Project Instructions
+# Elliot's Bloom Filter
+To build, call <code>npm install</code> from root directory.
 
-1. Call <code>npm install</code>
-2. Call <code>npm install ./client/</code>
-
-# Start Project Instructions
-Simply call <code>npm start</code> from root.
+To start, call <code>npm start</code> also from root.
