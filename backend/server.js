@@ -16,25 +16,18 @@ app.get('/', function(req, res) {
 var bfRouter = express.Router();
 
 // get instance of bloomfilter
-bfRouter.get('/', function(req, res) {
-	const bf = new bloomfilter(size=10);
+bfRouter.get('/', async function(req, res) {
+	const bf = await new bloomfilter(size=10);
+	console.log(bf.store);
 	
 	// load bloom filter bitvector after instantiation
 	// bf.init(function() {
-	// 	console.log(bf.store);
+	// 	const store = bf.store;
+	// 	console.log("in callback " + store);
 	// });
-
-	(async() => {
-		const wordsList = await getWordsList();
-		console.log(wordsList);
-	});
 	
 	res.json({ data: bf.store });
 });
-
-async function getWordsList() {
-	return "HI"
-}
 
 // search word in bloomfilter
 bfRouter.get('/:word', function(req, res) {

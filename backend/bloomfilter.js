@@ -4,18 +4,22 @@ const md5 = require('md5');
 
 module.exports = class BloomFilter {
 	constructor(size=1000) {
-		this.size = size;
-		this.store = this.initializeStore();
-	}
-
-	init(callback) {
-		console.log("before async");
-		(async() => {
-			console.log('in async');
+		return (async() => {
+			this.size = size;
+			this.store = this.initializeStore();
+			console.log("in async");
 			await this.createStore();
 		});
-		console.log("after async");
 	}
+
+	// init(callback) {
+	// 	(async() => {
+	// 		console.log('in async');
+	// 		const wordList = await this.getWordsList();
+	// 		this.createStore(wordList);
+	// 	});
+	// 	callback.bind(this)();
+	// }
 
 	// initialize store with 0's
 	initializeStore() {
@@ -29,18 +33,19 @@ module.exports = class BloomFilter {
 	}
 
 	// initialize our bitvector
-	async createStore() {
-		console.log("outside scope");
+	async createStore(wordList) {
+		// this.initializeStore();
+		console.log("create store called");
 
 		// run each word through hash and store in bitvector
-		for (var i = 0; i < this.wordList; i++) {
+		for (var i = 0; i < wordList; i++) {
 			const wordsList = await getWordsList();
 			const word = wordsList[i];
 			const hash = md5(word);
 			console.log(hash);
 		}
 
-		// this.store = store;
+		this.store = store;
 	}
 
 	// run word through hashing algorithms and place values in store
