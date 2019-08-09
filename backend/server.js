@@ -18,11 +18,23 @@ var bfRouter = express.Router();
 // get instance of bloomfilter
 bfRouter.get('/', function(req, res) {
 	const bf = new bloomfilter(size=10);
+	
+	// load bloom filter bitvector after instantiation
+	// bf.init(function() {
+	// 	console.log(bf.store);
+	// });
 
-	console.log(bf.store);
-
-	res.sendStatus(200);
+	(async() => {
+		const wordsList = await getWordsList();
+		console.log(wordsList);
+	});
+	
+	res.json({ data: bf.store });
 });
+
+async function getWordsList() {
+	return "HI"
+}
 
 // search word in bloomfilter
 bfRouter.get('/:word', function(req, res) {

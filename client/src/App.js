@@ -36,7 +36,7 @@ function BloomFilter(props) {
 
 	// fetch response from server
 	useEffect(() => {
-		fetch('/bloomfilter?word=test')
+		fetch('/bloomfilter')
 		.then(res => res.json())
 		.then(
 			(result) => {
