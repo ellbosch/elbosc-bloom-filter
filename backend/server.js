@@ -6,6 +6,9 @@ const bloomfilter =  require('./bloomfilter.js');
 
 const API_PORT = process.env.HTTP_PORT || 4001;
 
+// instantiate our bloomfilter
+const bf = new bloomfilter(size=100000);
+
 app.use(express.static(path.join(__dirname, '../client/build')));
 
 app.get('/', function(req, res) {
@@ -17,7 +20,7 @@ var bfRouter = express.Router();
 
 // get instance of bloomfilter
 bfRouter.get('/', async function(req, res) {
-	const bf = new bloomfilter(size=100000);
+	// create our bitvector for the bloomfilter
 	await bf.createStore();
 	
 	res.json({ data: bf.store });
@@ -25,10 +28,7 @@ bfRouter.get('/', async function(req, res) {
 
 // search word in bloomfilter
 bfRouter.get('/:word', function(req, res) {
-	// nil case or do singleton
-	console.log(req.params.word);
-
-	res.sendStatus(200);
+	res.json({ contains: bf.contains(req.params.word) });
 });
 
 app.use('/bloomfilter', bfRouter);

@@ -39,8 +39,8 @@ module.exports = class BloomFilter {
 		}
 	}
 
-	// run word through hashing algorithms and place values in store
-	addWord(word) {
+	// calculates hash for word
+	getHash(word) {
 		var value = 0;
 		const hashString = md5(word);
 
@@ -49,13 +49,23 @@ module.exports = class BloomFilter {
 			const charValue = (charCode << 5);
 			value = value + charValue;
 		}
-		this.store[value % this.size] = 1;			// return modulo of hash value with size of our store
+		
+		return value;
 	}
 
-	// search in store to see if word is (maybe) valid or definitely not valid
-	searchWord(word) {
-		
+	// run word through hashing algorithms and place values in store
+	addWord(word) {
+		const hash = this.getHash(word);
+		this.store[hash % this.size] = 1;			// return modulo of hash value with size of our store
 	}
+
+
+	// search in store to see if word is (maybe) valid or definitely not valid
+	contains(word) {
+		const hash = this.getHash(word);
+		return this.store[hash];
+	}
+
 	async getWordsList() {
 		const wordsList = await fs.readFileSync(wordListPath, 'utf8').split('\n');
 		return wordsList;

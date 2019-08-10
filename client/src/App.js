@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-// import BloomFilter from './bloomFilter';
 
 function App() {
   return (
@@ -21,16 +20,11 @@ function Home() {
   )
 }
 
+// create bloom filter
 function BloomFilter() {
 	// fetch response from server
 	useEffect(() => {
 		fetch('/bloomfilter')
-		.then(res => res.json())
-		.then(
-			(result) => {
-				console.log(result);
-			}
-		)
 	});
 
 	return (
@@ -39,19 +33,19 @@ function BloomFilter() {
 }
 
 function SpellChecker({match}) {
-  const [result, setResult] = useState(null);
-  
+  const [result, setResult] = useState(null);  
   const word = match.params.word;
 
   // fetch response from server
 	useEffect(() => {
-		fetch('/bloomfilter/' + word)
+    fetch('/bloomfilter/' + word)
+    .then(res => res.json())
 		.then(
 			(result) => {
-        if (result.status === 200) {
-          setResult('Maybe Valid');
+        if (result.contains) {
+          setResult("Bloom filter may contain \"" + word + "\"");
         } else {
-          setResult('Not Valid');
+          setResult("Bloom filter does not contain \"" + word + "\"");
         }
 			}
 		)
