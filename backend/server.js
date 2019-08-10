@@ -19,13 +19,6 @@ var bfRouter = express.Router();
 bfRouter.get('/', async function(req, res) {
 	const bf = new bloomfilter(size=100000);
 	await bf.createStore();
-	console.log("store: " + bf.store);
-	
-	// load bloom filter bitvector after instantiation
-	// bf.init(function() {
-	// 	const store = bf.store;
-	// 	console.log("in callback " + store);
-	// });
 	
 	res.json({ data: bf.store });
 });
@@ -33,6 +26,9 @@ bfRouter.get('/', async function(req, res) {
 // search word in bloomfilter
 bfRouter.get('/:word', function(req, res) {
 	// nil case or do singleton
+	console.log("word");
+
+	res.sendStatus(200);
 });
 
 app.use('/bloomfilter', bfRouter);
