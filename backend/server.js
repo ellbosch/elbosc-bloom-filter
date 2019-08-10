@@ -17,8 +17,9 @@ var bfRouter = express.Router();
 
 // get instance of bloomfilter
 bfRouter.get('/', async function(req, res) {
-	const bf = await new bloomfilter(size=10);
-	console.log(bf.store);
+	const bf = new bloomfilter(size=100000);
+	await bf.createStore();
+	console.log("store: " + bf.store);
 	
 	// load bloom filter bitvector after instantiation
 	// bf.init(function() {

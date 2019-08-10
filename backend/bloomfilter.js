@@ -4,12 +4,8 @@ const md5 = require('md5');
 
 module.exports = class BloomFilter {
 	constructor(size=1000) {
-		return (async() => {
-			this.size = size;
-			this.store = this.initializeStore();
-			console.log("in async");
-			await this.createStore();
-		});
+		this.size = size;
+		this.store = this.initializeStore();
 	}
 
 	// init(callback) {
@@ -33,24 +29,27 @@ module.exports = class BloomFilter {
 	}
 
 	// initialize our bitvector
-	async createStore(wordList) {
-		// this.initializeStore();
-		console.log("create store called");
+	async createStore() {
+		const wordList = await this.getWordsList();
 
 		// run each word through hash and store in bitvector
-		for (var i = 0; i < wordList; i++) {
-			const wordsList = await getWordsList();
-			const word = wordsList[i];
-			const hash = md5(word);
-			console.log(hash);
+		for (var i = 0; i < wordList.length; i++) {
+			const word = wordList[i];
+			this.addWord(word);
 		}
-
-		this.store = store;
 	}
 
 	// run word through hashing algorithms and place values in store
 	addWord(word) {
+		var value = 0;
+		const hashString = md5(word);
 
+		for (var i = 0; i < hashString.length; i++) {
+			const charCode = hashString.charCodeAt(i);
+			const charValue = (charCode << 5);
+			value = value + charValue;
+		}
+		this.store[value % this.size] = 1;			// return modulo of hash value with size of our store
 	}
 
 	// search in store to see if word is (maybe) valid or definitely not valid
@@ -58,11 +57,10 @@ module.exports = class BloomFilter {
 		
 	}
 	async getWordsList() {
-		const wordsList = await resolve(fs.readFileSync(wordListPath, 'utf8').split('\n'));
+		const wordsList = await fs.readFileSync(wordListPath, 'utf8').split('\n');
 		return wordsList;
 	}
 }
-
 
 // class DataProvider {
 // 	constructor() {
