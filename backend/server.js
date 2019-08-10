@@ -6,8 +6,9 @@ const bloomfilter =  require('./bloomfilter.js');
 
 const API_PORT = process.env.HTTP_PORT || 4001;
 
-// instantiate our bloomfilter
-const bf = new bloomfilter(size=100000);
+// instantiate our bloomfilter and create its bitvector
+const bf = new bloomfilter(size=1000000);
+bf.createStore();
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 
@@ -20,10 +21,7 @@ var bfRouter = express.Router();
 
 // get instance of bloomfilter
 bfRouter.get('/', async function(req, res) {
-	// create our bitvector for the bloomfilter
-	await bf.createStore();
-	
-	res.json({ data: bf.store });
+	res.sendStatus(200);
 });
 
 // search word in bloomfilter
@@ -32,13 +30,6 @@ bfRouter.get('/:word', function(req, res) {
 });
 
 app.use('/bloomfilter', bfRouter);
-
-// // loads roughly 274k words
-// app.get('/words', function(req, res) {
-// 	const words = fs.readFileSync(wordListPath, 'utf-8').split('\n');
-// 	res.json({ data: words });
-// });
-
 
 // launch our backend into a port
 app.listen(API_PORT, () => console.log(`LISTENING ON PORT ${API_PORT}`));

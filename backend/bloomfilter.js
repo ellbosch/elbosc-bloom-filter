@@ -1,6 +1,7 @@
 const wordListPath = require('word-list');
 const fs = require('fs');
-const md5 = require('md5');
+const hasha = require('hasha');
+const farmhash = require('farmhash');
 
 module.exports = class BloomFilter {
 	constructor(size=1000) {
@@ -41,16 +42,17 @@ module.exports = class BloomFilter {
 
 	// calculates hash for word
 	getHash(word) {
-		var value = 0;
-		const hashString = md5(word);
+		// var value = 0;
+		const hashString = hasha(word, { algorithm: 'md5' });
+		const value = farmhash.fingerprint32(hashString);		// converts hash string to 32 bit integer
 
-		for (var i = 0; i < hashString.length; i++) {
-			const charCode = hashString.charCodeAt(i);
-			const charValue = (charCode << 5);
-			value = value + charValue;
-		}
-		
-		return value;
+		// for (var i = 0; i < hashString.length; i++) {
+		// 	const charCode = hashString.charCodeAt(i);
+		// 	value = value + charCode;
+		// }
+		console.log(value % this.size);
+		// use modulo to keep value under size limit
+		return value % this.size;
 	}
 
 	// run word through hashing algorithms and place values in store
