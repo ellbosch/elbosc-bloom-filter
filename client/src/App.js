@@ -21,7 +21,7 @@ function Home() {
   )
 }
 
-function BloomFilter(props) {
+function BloomFilter() {
 	// fetch response from server
 	useEffect(() => {
 		fetch('/bloomfilter')
@@ -38,15 +38,16 @@ function BloomFilter(props) {
 	)
 }
 
-function SpellChecker(props) {
+function SpellChecker({match}) {
   const [result, setResult] = useState(null);
+  
+  const word = match.params.word;
 
   // fetch response from server
 	useEffect(() => {
-		fetch('/bloomfilter/testing')
+		fetch('/bloomfilter/' + word)
 		.then(
 			(result) => {
-        console.log(result);
         if (result.status === 200) {
           setResult('Maybe Valid');
         } else {

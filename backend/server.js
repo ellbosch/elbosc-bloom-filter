@@ -26,7 +26,7 @@ bfRouter.get('/', async function(req, res) {
 // search word in bloomfilter
 bfRouter.get('/:word', function(req, res) {
 	// nil case or do singleton
-	console.log("word");
+	console.log(req.params.word);
 
 	res.sendStatus(200);
 });
