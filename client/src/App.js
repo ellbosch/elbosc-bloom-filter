@@ -16,12 +16,12 @@ function App() {
 }
 
 function Controls(props) {
-  const [vectorSizeInput, setVectorSizeInput] = useState("");                 // query string for vector size
-  const [vectorSizeServer, setVectorSizeServer] = useState(props.size);       // current state of vector size from server
-  const [md5Checkbox, setMd5Checkbox] = useState(props.algorithms["MD5"]);           // algorithms currently selected on client
-  const [sha1Checkbox, setSha1Checkbox] = useState(props.algorithms["SHA-1"]);         // algorithms currently selected on client
-  const [sha256Checkbox, setSha256Checkbox] = useState(props.algorithms["SHA-256"]);     // algorithms currently selected on client
-  const [algorithmsServer, setAlgorithmsServer] = useState(props.algorithms); // algorithms currently selected on server
+  const [vectorSizeInput, setVectorSizeInput] = useState("");                         // query string for vector size
+  const [vectorSizeServer, setVectorSizeServer] = useState(props.size);               // current state of vector size from server
+  const [md5Checkbox, setMd5Checkbox] = useState(props.algorithms["MD5"]);            // algorithms currently selected on client
+  const [sha1Checkbox, setSha1Checkbox] = useState(props.algorithms["SHA-1"]);        // algorithms currently selected on client
+  const [sha256Checkbox, setSha256Checkbox] = useState(props.algorithms["SHA-256"]);  // algorithms currently selected on client
+  const [algorithmsServer, setAlgorithmsServer] = useState(props.algorithms);         // algorithms currently selected on server
 
   // post request for creating bloom filter
   function createBloomFilter(e) {
@@ -49,13 +49,7 @@ function Controls(props) {
       }
     )
   }
-
-  // function toggleCheckbox(key) {
-  //   var newAlgorithmsInput = algorithmsInput;
-  //   newAlgorithmsInput[key] = !algorithmsInput[key];
-  //   setAlgorithmsInput(newAlgorithmsInput);
-  // }
-
+  
   // returns string friendly dictionary for true elements
   function booleanDictToString(dict) {
     var selected = [];
@@ -85,17 +79,17 @@ function Controls(props) {
         <div className="form-group mb-1">
           <div className="form-check form-check-inline">
             <input className="form-check-input" type="checkbox" id="inlineCheckboxMd5" checked={md5Checkbox} value="md5"
-                onChange={setMd5Checkbox(!md5Checkbox)} />
+                onChange={() => setMd5Checkbox(!md5Checkbox)} />
             <label className="form-check-label" htmlFor="inlineCheckboxMd5">MD5</label>
           </div>
           <div className="form-check form-check-inline">
             <input className="form-check-input" type="checkbox" id="inlineCheckboxSha1" checked={sha1Checkbox} value="sha1"
-                onChange={setSha1Checkbox(!sha1Checkbox)} />
+                onChange={() => setSha1Checkbox(!sha1Checkbox)} />
             <label className="form-check-label" htmlFor="inlineCheckboxSha1">SHA-1</label>
           </div>
           <div className="form-check form-check-inline">
             <input className="form-check-input" type="checkbox" id="inlineCheckboxSha256" checked={sha256Checkbox} value="sha256"
-                onChange={setSha256Checkbox(!sha256Checkbox)} />
+                onChange={() => setSha256Checkbox(!sha256Checkbox)} />
             <label className="form-check-label" htmlFor="inlineCheckboxSha256">SHA-256</label>
           </div>
         </div>
