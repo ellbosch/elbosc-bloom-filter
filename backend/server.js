@@ -7,11 +7,11 @@ const app = express();
 const API_PORT = process.env.HTTP_PORT || 4001;
 
 // hold pointer to bloom filter
-var bf = null;
+var bf = new bloomfilter(size=Math.pow(10, 8));
+bf.createStore();
 
 app.use(express.static(path.join(__dirname, '../client/build')));
 app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', function(req, res) {
 	res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
@@ -27,8 +27,9 @@ bfRouter.post('/', function(req, res) {
 	if (sizePowerOfTen != null) {
 		bf = new bloomfilter(size=Math.pow(10, sizePowerOfTen));
 		bf.createStore();
-		res.sendStatus(200);
+		res.json({ size: sizePowerOfTen })
 	} else {
+		// if too large, will exceed js heap bound and send 405
 		res.sendStatus(405);
 	}
 });

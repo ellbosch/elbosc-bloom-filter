@@ -16,8 +16,10 @@ function App() {
 }
 
 function Controls() {
-  const [vectorSize, setVectorSize] = useState(8);   // let user control bit vector (set to powers of 10)
-  const createBloomFilter = useCallback(() => {
+  const [vectorSize, setVectorSize] = useState(null);   // let user control bit vector (set to powers of 10)
+  
+  function createBloomFilter() {
+    console.log("HI");
     fetch('/bloomfilter', {
       method: 'post',
       headers: {'Content-Type':'application/json'},
@@ -25,7 +27,7 @@ function Controls() {
         'size': vectorSize
       })
     });
-  }, [vectorSize]);
+  }
 
   return (
     <div className="row align-items-center">
