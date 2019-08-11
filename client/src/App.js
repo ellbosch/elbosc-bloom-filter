@@ -22,6 +22,7 @@ function Controls(props) {
   const [sha1Checkbox, setSha1Checkbox] = useState(props.algorithms["SHA-1"]);        // algorithms currently selected on client
   const [sha256Checkbox, setSha256Checkbox] = useState(props.algorithms["SHA-256"]);  // algorithms currently selected on client
   const [algorithmsServer, setAlgorithmsServer] = useState(booleanDictToString(props.algorithms));         // algorithms currently selected on server
+  const [errorString, setErrorString] = useState("");
 
   // post request for creating bloom filter
   function createBloomFilter(e) {
@@ -38,16 +39,20 @@ function Controls(props) {
           'SHA-256': sha256Checkbox
         }
       })
-    })
-    .then(res => res.json())
-    .then(
-      (result) => {
+    }).then(res => {
+      return res.json();
+    }).then(result => {
+      if (result.error != null) {
+        // show alert if error
+        setErrorString(result.error);
+      } else {
         // UI updates with new size of bit vector and removes text from word lookup input
         setVectorSizeServer(result.size);
         setAlgorithmsServer(booleanDictToString(result.algorithms));
-        props.setWordLookUpQuery("");
+        setErrorString("");
       }
-    )
+      props.setWordLookUpQuery("");
+    })
   }
   
   // returns string friendly dictionary for true elements
@@ -66,7 +71,8 @@ function Controls(props) {
     return selected.join(", ");
   }
 
-  return (
+  const error = (<div className="alert alert-danger" role="alert">{errorString}</div>);
+  const controls = (
     <form className="form-inline">
       <div className="col-auto col-control mb-3">
         <div className="form-group">
@@ -100,7 +106,22 @@ function Controls(props) {
         <button onClick={e => createBloomFilter(e)} className="btn btn-primary btn-sm">Create</button>
       </div>
     </form>
-  )
+  );
+
+  if (errorString !== "") {
+    return (
+      <div>
+        {controls}
+        {error}
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        {controls}
+      </div>
+    )
+  }
 }
 
 function QueryResult(props) {

@@ -6,9 +6,22 @@ const bitVector = require('bit-vector');
 
 module.exports = class BloomFilter {
 	constructor(sizePowerOfTen=8, usesMd5=true, usesSha1=true, usesSha256=true) {
+		// only proceed if there's a selected algorithm
+		if (!usesMd5 && !usesSha1 && !usesSha256) {
+			throw("Must select an algorithm!");
+		}
+		if (sizePowerOfTen == "") {
+			sizePowerOfTen = 8;
+		}
 		this.sizePowerOfTen = sizePowerOfTen;
 		this.size = Math.pow(10, sizePowerOfTen);
-		this.store = this.initializeStore();
+		
+		// if too large, bit vector can break
+		try {
+			this.store = this.initializeStore();
+		} catch {
+			throw("Unable to create bit vector at this size!");
+		}
 		
 		// set which algorithms we'll use for hashing
 		this.usesMd5 = usesMd5;
