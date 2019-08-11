@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bit-vector": "^0.1.6",
+    "body-parser": "^1.19.0",
     "crypto": "^1.0.1",
     "express": "^4.17.1",
     "farmhash": "^3.0.0",
