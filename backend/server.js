@@ -20,6 +20,11 @@ app.get('/', function(req, res) {
 // create router for bloomfilter
 var bfRouter = express.Router();
 
+// gets info on bloom filter (i.e. it's size)
+bfRouter.get('/', function(req, res) {
+	res.json({ size: bf.size });
+});
+
 // creates new bloom filter and sets size of bit vector
 bfRouter.post('/', function(req, res) {
 	const sizePowerOfTen = req.body.size;
@@ -27,7 +32,7 @@ bfRouter.post('/', function(req, res) {
 	if (sizePowerOfTen != null) {
 		bf = new bloomfilter(size=Math.pow(10, sizePowerOfTen));
 		bf.createStore();
-		res.json({ size: sizePowerOfTen })
+		res.json({ size: sizePowerOfTen });
 	} else {
 		// if too large, will exceed js heap bound and send 405
 		res.sendStatus(405);
