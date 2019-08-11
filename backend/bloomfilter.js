@@ -2,6 +2,7 @@ const wordListPath = require('word-list');
 const fs = require('fs');
 const crypto = require('crypto');
 const farmhash = require('farmhash');
+const bitVector = require('bit-vector');
 
 module.exports = class BloomFilter {
 	constructor(size=1000, usesMd5=true, usesSha1=true, usesSha256=true) {
@@ -16,13 +17,7 @@ module.exports = class BloomFilter {
 
 	// initialize store with 0's
 	initializeStore() {
-		var store = [];
-
-		// first initialize to array of 0's
-		for (var i = 0; i < this.size; i++) {
-			store.push(0);
-		}
-		return store;
+		return bitVector.createBv(this.size);
 	}
 
 	// initialize our bitvector
@@ -30,23 +25,16 @@ module.exports = class BloomFilter {
 		const wordList = await this.getWordsList();
 
 		// run each word through hash and store in bitvector
-		for (var i = 0; i < wordList.length; i++) {
-			const word = wordList[i];
+		wordList.forEach(word => {
 			this.addHash(word);
-		}
-
-		// var counter = 0;
-		// this.store.forEach(element => {
-		// 	counter = counter + element;
-		// });
-		// console.log(counter / this.size);
+		});
 	}
 
 	// run word through hashing algorithms and place values in store
 	addHash(word) {
 		const values = this.getHashValues(word);
 		values.forEach(hash => {
-			this.store[hash] = 1;
+			bitVector.setBit(this.store, hash);
 		});
 	}
 
@@ -84,7 +72,7 @@ module.exports = class BloomFilter {
 
 		// if any hash value isn't in our store, return false
 		for (let hash of values) {
-			if (!this.store[hash]) {
+			if (!bitVector.getBit(this.store, hash)) {
 				return false;
 			}
 		}

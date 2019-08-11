@@ -7,7 +7,7 @@ const bloomfilter =  require('./bloomfilter.js');
 const API_PORT = process.env.HTTP_PORT || 4001;
 
 // instantiate our bloomfilter and create its bitvector
-const bf = new bloomfilter(size=1000000);
+const bf = new bloomfilter(size=Math.pow(10,8));
 bf.createStore();
 
 app.use(express.static(path.join(__dirname, '../client/build')));

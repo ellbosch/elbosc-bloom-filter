@@ -13,6 +13,10 @@ function App() {
   );
 }
 
+// function Controls() {
+
+// }
+
 function QueryResult(props) {
   const queryString = props.query;
   const [result, setResult] = useState(null);
