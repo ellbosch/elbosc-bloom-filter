@@ -42,6 +42,7 @@ function SpellChecker({match}) {
     .then(res => res.json())
 		.then(
 			(result) => {
+        console.log(result.contains);
         if (result.contains) {
           setResult("Bloom filter may contain \"" + word + "\"");
         } else {

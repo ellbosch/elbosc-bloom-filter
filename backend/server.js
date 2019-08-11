@@ -26,7 +26,8 @@ bfRouter.get('/', async function(req, res) {
 
 // search word in bloomfilter
 bfRouter.get('/:word', function(req, res) {
-	res.json({ contains: bf.contains(req.params.word) });
+	const result = bf.contains(req.params.word);
+	res.json({ contains: result });
 });
 
 app.use('/bloomfilter', bfRouter);
