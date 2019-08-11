@@ -5,7 +5,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="text-center">Bloom Filter</h1>
+      <h1 className="text-center" id="header-main">Bloom Filter</h1>
       <input type="text" className="form-control" placeholder="Look up word in bloom filter" aria-label="Search word"
           aria-describedby="button-search" value={queryString} onChange={e => setQueryString(e.target.value)} />
       <br />

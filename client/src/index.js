@@ -5,6 +5,7 @@ import * as serviceWorker from './serviceWorker';
 
 // CSS
 import 'bootstrap/dist/css/bootstrap.css';
+import './stylesheet.css';
 
 // JS
 import 'jquery';
