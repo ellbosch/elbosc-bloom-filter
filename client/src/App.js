@@ -21,7 +21,7 @@ function Controls(props) {
   const [md5Checkbox, setMd5Checkbox] = useState(props.algorithms["MD5"]);            // algorithms currently selected on client
   const [sha1Checkbox, setSha1Checkbox] = useState(props.algorithms["SHA-1"]);        // algorithms currently selected on client
   const [sha256Checkbox, setSha256Checkbox] = useState(props.algorithms["SHA-256"]);  // algorithms currently selected on client
-  const [algorithmsServer, setAlgorithmsServer] = useState(props.algorithms);         // algorithms currently selected on server
+  const [algorithmsServer, setAlgorithmsServer] = useState(booleanDictToString(props.algorithms));         // algorithms currently selected on server
 
   // post request for creating bloom filter
   function createBloomFilter(e) {
@@ -44,7 +44,7 @@ function Controls(props) {
       (result) => {
         // UI updates with new size of bit vector and removes text from word lookup input
         setVectorSizeServer(result.size);
-        setAlgorithmsServer(result.algorithms);
+        setAlgorithmsServer(booleanDictToString(result.algorithms));
         props.setWordLookUpQuery("");
       }
     )
@@ -55,11 +55,12 @@ function Controls(props) {
     var selected = [];
 
     for (var key in dict) {
+
       if (dict[key]) {
         selected.push(key);
       }
     }
-    if (selected.length == 0) {
+    if (selected.length === 0) {
       return "None";
     }
     return selected.join(", ");
@@ -93,7 +94,7 @@ function Controls(props) {
             <label className="form-check-label" htmlFor="inlineCheckboxSha256">SHA-256</label>
           </div>
         </div>
-        <span><small>Current Algorithms: {booleanDictToString(algorithmsServer)}</small></span>
+        <span><small>Current Algorithms: {algorithmsServer}</small></span>
       </div>
       <div className="col-sm-12 col-md-auto align-self-start">
         <button onClick={e => createBloomFilter(e)} className="btn btn-primary btn-sm">Create</button>

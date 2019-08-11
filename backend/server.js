@@ -6,8 +6,8 @@ const path = require('path');
 const app = express();
 const API_PORT = process.env.HTTP_PORT || 4001;
 
-// hold pointer to bloom filter
-var bf = new bloomfilter(size=Math.pow(10, 8));
+// instantiate bloom filter with default size
+var bf = new bloomfilter();
 bf.createStore();
 
 app.use(express.static(path.join(__dirname, '../client/build')));
@@ -22,17 +22,28 @@ var bfRouter = express.Router();
 
 // gets info on bloom filter (i.e. it's size)
 bfRouter.get('/', function(req, res) {
-	res.json({ size: bf.size });
+	res.json(
+		{
+			size: bf.sizePowerOfTen,
+			algorithms: { 'MD5': this.usesMd5, 'SHA-1': this.usesSha1, 'SHA-256': this.usesSha256 }
+		});
 });
 
 // creates new bloom filter and sets size of bit vector
 bfRouter.post('/', function(req, res) {
-	const sizePowerOfTen = req.body.size;
+	var sizePowerOfTen = req.body.size;
+	var algorithms = req.body.algorithms;
 
 	if (sizePowerOfTen != null) {
-		bf = new bloomfilter(size=Math.pow(10, sizePowerOfTen));
+		bf = new bloomfilter(sizePowerOfTen=sizePowerOfTen, usesMd5=algorithms['MD5'],
+				usesSha1=algorithms['SHA-1'], usesSha256=algorithms['SHA-256']);
 		bf.createStore();
-		res.json({ size: sizePowerOfTen });
+		console.log(bf.sizePowerOfTen);
+		res.json(
+			{
+				size: bf.sizePowerOfTen,
+				algorithms: { 'MD5': bf.usesMd5, 'SHA-1': bf.usesSha1, 'SHA-256': bf.usesSha256 }
+			});
 	} else {
 		// if too large, will exceed js heap bound and send 405
 		res.sendStatus(405);

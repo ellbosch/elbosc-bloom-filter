@@ -5,8 +5,9 @@ const farmhash = require('farmhash');
 const bitVector = require('bit-vector');
 
 module.exports = class BloomFilter {
-	constructor(size=1000, usesMd5=true, usesSha1=true, usesSha256=true) {
-		this.size = size;
+	constructor(sizePowerOfTen=8, usesMd5=true, usesSha1=true, usesSha256=true) {
+		this.sizePowerOfTen = sizePowerOfTen;
+		this.size = Math.pow(10, sizePowerOfTen);
 		this.store = this.initializeStore();
 		
 		// set which algorithms we'll use for hashing
