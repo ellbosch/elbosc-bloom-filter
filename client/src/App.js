@@ -38,21 +38,36 @@ function Controls(props) {
   }
 
   return (
-    <div className="row">
-      <div className="col-auto">
-        <div className="input-group input-group-sm mb-2">
-          <div className="input-group-prepend">
-            <span className="input-group-text">Vector Size in 0's</span>
+    <form className="form-inline">
+      <div className="col-auto col-control">
+        <div className="form-group">
+          <label className="mr-2" htmlFor="vector-size-input">Vector Size in 0's</label>
+          <input type="text" className="form-control form-control-sm" id="vector-size-input" placeholder="Power of 10" aria-label="Vector Size"
+              value={vectorSizeQuery} onChange={e => setVectorSizeQuery(e.target.value)} />
+        </div>
+        <span><small>Current Bit Vector Size: 10<sup>{vectorSizeServer}</sup></small></span>
+      </div>
+      <div className="col-auto col-control">
+        <div className="form-group mb-1">
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="checkbox" id="inlineCheckboxMd5" value="md5" />
+            <label className="form-check-label" htmlFor="inlineCheckboxMd5">MD5</label>
           </div>
-          <input type="text" className="form-control" id="vector-size-input" placeholder="Power of 10" aria-label="Vector Size"
-              aria-describedby="vector-size-button" value={vectorSizeQuery} onChange={e => setVectorSizeQuery(e.target.value)} />
-          <div className="input-group-append">
-            <button id="vector-size-button" className="btn btn-outline-secondary" type="button" onClick={createBloomFilter}>Create</button>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="checkbox" id="inlineCheckboxSha1" value="sha1" />
+            <label className="form-check-label" htmlFor="inlineCheckboxSha1">SHA-1</label>
+          </div>
+          <div className="form-check form-check-inline">
+            <input className="form-check-input" type="checkbox" id="inlineCheckboxSha256" value="sha256"/>
+            <label className="form-check-label" htmlFor="inlineCheckboxSha256">SHA-256</label>
           </div>
         </div>
-        <span><small><strong>Current Bit Vector Size: 10<sup>{vectorSizeServer}</sup></strong></small></span>
+        <span><small>Current Algorithms: ???</small></span>
       </div>
-    </div>
+      <div className="col-auto">
+        <button onClick={createBloomFilter} className="btn btn-primary my-1">Create</button>
+      </div>
+    </form>
   )
 }
 
