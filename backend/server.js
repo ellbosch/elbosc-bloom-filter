@@ -19,11 +19,6 @@ app.get('/', function(req, res) {
 // create router for bloomfilter
 var bfRouter = express.Router();
 
-// get instance of bloomfilter
-bfRouter.get('/', async function(req, res) {
-	res.sendStatus(200);
-});
-
 // search word in bloomfilter
 bfRouter.get('/:word', function(req, res) {
 	const result = bf.contains(req.params.word);

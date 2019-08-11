@@ -19,19 +19,21 @@ function QueryResult(props) {
   const [alertClass, setAlertClass] = useState(null);   // determines color of alert
 
   useEffect(() => {
-    fetch('/bloomfilter/' + queryString)
-    .then(res => res.json())
-		.then(
-			(result) => {
-        if (result.contains) {
-          setResult("Bloom filter may contain \"" + queryString + "\"");
-          setAlertClass("alert alert-primary");
-        } else {
-          setResult("Bloom filter does not contain \"" + queryString + "\"");
-          setAlertClass("alert alert-warning");
+    if (queryString !== "") {
+      fetch('/bloomfilter/' + queryString)
+      .then(res => res.json())
+      .then(
+        (result) => {
+          if (result.contains) {
+            setResult("Bloom filter may contain \"" + queryString + "\"");
+            setAlertClass("alert alert-primary");
+          } else {
+            setResult("Bloom filter does not contain \"" + queryString + "\"");
+            setAlertClass("alert alert-warning");
+          }
         }
-			}
-		)
+      )
+    }
   });
 
   return (
