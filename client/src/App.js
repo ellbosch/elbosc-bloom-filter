@@ -3,26 +3,22 @@ import React, { useState, useEffect } from 'react';
 function App() {
   const [queryString, setQueryString] = useState("");
 
-  useEffect(() => {
-    console.log("HII");
-  });
-
   return (
     <div className="container">
       <h1 className="text-center">Bloom Filter</h1>
       <input type="text" className="form-control" placeholder="Look up word in bloom filter" aria-label="Search word"
           aria-describedby="button-search" value={queryString} onChange={e => setQueryString(e.target.value)} />
       <br />
-      <Controls size={8} />
+      <Controls size={8} setWordLookUpQuery={setQueryString} />
       <QueryResult query={queryString} />
     </div>
   );
 }
 
 function Controls(props) {
+  const [vectorSizeServer, setVectorSizeServer] = useState(props.size);   // current state of vector size from server
   const [vectorSizeQuery, setVectorSizeQuery] = useState("");             // query string for vector size
-  const [vectorSizeServer, setVectorSizeServer] = useState(props.size);     // current state of vector size from server
-  
+
   function createBloomFilter() {
     fetch('/bloomfilter', {
       method: 'post',
@@ -33,7 +29,11 @@ function Controls(props) {
     })
     .then(res => res.json())
     .then(
-      (result) => { setVectorSizeServer(result.size) }
+      (result) => {
+        // UI updates with new size of bit vector and removes text from word lookup input
+        setVectorSizeServer(result.size);
+        props.setWordLookUpQuery("");
+      }
     )
   }
 
@@ -79,11 +79,15 @@ function QueryResult(props) {
     }
   });
 
-  return (
-    <div className={alertClass} role="alert">
-      {result}
-    </div>
-  );
+  // only show result if we have a string in query
+  if (queryString !== "") {
+    return (
+      <div className={alertClass} role="alert">
+        {result}
+      </div>
+    )
+  }
+  return null;
 }
 
 export default App;
