@@ -16,13 +16,14 @@ function App() {
   );
 }
 
+// Customizable controls for bloom filter
 function Controls(props) {
   const [vectorSizeInput, setVectorSizeInput] = useState("");                         // query string for vector size
   const [vectorSizeServer, setVectorSizeServer] = useState(props.size);               // current state of vector size from server
   const [md5Checkbox, setMd5Checkbox] = useState(props.algorithms["MD5"]);            // algorithms currently selected on client
   const [sha1Checkbox, setSha1Checkbox] = useState(props.algorithms["SHA-1"]);        // algorithms currently selected on client
   const [sha256Checkbox, setSha256Checkbox] = useState(props.algorithms["SHA-256"]);  // algorithms currently selected on client
-  const [algorithmsServer, setAlgorithmsServer] = useState(booleanDictToString(props.algorithms));         // algorithms currently selected on server
+  const [algorithmsServer, setAlgorithmsServer] = useState(booleanDictToString(props.algorithms));    // algorithms currently selected on server
   const [errorString, setErrorString] = useState("");
 
   // post request for creating bloom filter
@@ -125,6 +126,7 @@ function Controls(props) {
   }
 }
 
+// Displays result of user-inputted query in our spell checker
 function QueryResult(props) {
   const queryString = props.query;
   const [result, setResult] = useState(null);
