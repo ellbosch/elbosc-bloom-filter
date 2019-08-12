@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 // Customizable controls for bloom filter
 function Controls(props) {
-	const [vectorSizeInput, setVectorSizeInput] = useState("");                         // query string for vector size
+	const [vectorSizeInput, setVectorSizeInput] = useState(props.size);                         // query string for vector size
 	const [vectorSizeServer, setVectorSizeServer] = useState(props.size);               // current state of vector size from server
 
 	// algorithms currently selected on client
@@ -55,9 +55,9 @@ function Controls(props) {
 	function validateForm() {
 		// check if specified vector size 
 		if (!Number.isInteger(parseInt(vectorSizeInput))) {
-			// if blank, set to our default of 8
+			// if blank, set to our default
 			if (vectorSizeInput === "") {
-				setVectorSizeInput(8);
+				setVectorSizeInput(props.size);
 			} else {
 				throw("Vector size is not a valid number!");
 			}
