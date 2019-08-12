@@ -17,31 +17,54 @@ function Controls(props) {
 	function createBloomFilter(e) {
 		e.preventDefault();
 
-		fetch('/bloomfilter', {
-			method: 'post',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({
-				'size': vectorSizeInput,
-				'algorithms': {
-					'MD5': md5Checkbox,
-					'SHA-1': sha1Checkbox,
-					'SHA-256': sha256Checkbox
+		try {
+			validateForm();
+			fetch('/bloomfilter', {
+				method: 'post',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({
+					'size': vectorSizeInput,
+					'algorithms': {
+						'MD5': md5Checkbox,
+						'SHA-1': sha1Checkbox,
+						'SHA-256': sha256Checkbox
+					}
+				})
+			}).then(res => {
+				return res.json();
+			}).then(result => {
+				if (result.error != null) {
+					setErrorString(result.error);
+				} else {
+					// UI updates with new size of bit vector and removes text from word lookup input
+					setVectorSizeServer(result.size);
+					setAlgorithmsServer(booleanDictToString(result.algorithms));
+					setErrorString("");
 				}
-			})
-		}).then(res => {
-			return res.json();
-		}).then(result => {
-			if (result.error != null) {
-				// show alert if error
-				setErrorString(result.error);
+			});
+		} catch(err) {
+			// show alert if error
+			setErrorString(err);
+		}
+
+		// reset word query input
+		props.setWordLookUpQuery("");
+	}
+
+	// checks if form is valid for proceeding
+	function validateForm() {
+		// check if specified vector size 
+		if (!Number.isInteger(parseInt(vectorSizeInput))) {
+			// if blank, set to our default of 8
+			if (vectorSizeInput === "") {
+				setVectorSizeInput(8);
 			} else {
-				// UI updates with new size of bit vector and removes text from word lookup input
-				setVectorSizeServer(result.size);
-				setAlgorithmsServer(booleanDictToString(result.algorithms));
-				setErrorString("");
+				throw("Vector size is not a valid number!");
 			}
-			props.setWordLookUpQuery("");
-		})
+
+		}
+		// check if an algorithm is selected
+
 	}
 
 	// returns string friendly dictionary for true elements
@@ -52,7 +75,7 @@ function Controls(props) {
 
 	const error = (<div className="alert alert-danger" role="alert">{errorString}</div>);
 	const controls = (
-		<form className="form-inline">
+		<form className="form-inline mb-3">
 			<div className="col-auto col-control mb-3">
 				<div className="form-group">
 					<label className="mr-2" htmlFor="vector-size-input">Vector Size in 0's</label>
