@@ -44,7 +44,7 @@ bfRouter.post('/', function(req, res, next) {
 				algorithms: { 'MD5': bf.usesMd5, 'SHA-1': bf.usesSha1, 'SHA-256': bf.usesSha256 }
 			});
 	} catch(err) {
-		next(err);
+		next(err.toString());
 	}
 });
 

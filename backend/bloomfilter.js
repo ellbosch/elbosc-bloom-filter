@@ -20,7 +20,7 @@ module.exports = class BloomFilter {
 		try {
 			this.store = this.initializeStore();
 		} catch {
-			throw("Unable to create bit vector at this size!");
+			throw new Error("Unable to create bit vector at this size!");
 		}
 		
 		// set which algorithms we'll use for hashing

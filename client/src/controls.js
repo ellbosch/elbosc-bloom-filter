@@ -44,7 +44,7 @@ function Controls(props) {
 			});
 		} catch(err) {
 			// show alert if error
-			setErrorString(err);
+			setErrorString(err.toString());
 		}
 
 		// reset word query input
@@ -59,13 +59,13 @@ function Controls(props) {
 			if (vectorSizeInput === "") {
 				setVectorSizeInput(props.size);
 			} else {
-				throw("Vector size is not a valid number!");
+				throw new Error("Vector size is not a valid number!");
 			}
 
 		}
 		// check if an algorithm is not selected
 		if (!md5Checkbox && !sha1Checkbox && !sha256Checkbox) {
-			throw("Must select an algorithm!");
+			throw new Error("Must select an algorithm!");
 		}
 
 	}
