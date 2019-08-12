@@ -85,7 +85,7 @@ module.exports = class BloomFilter {
 		const values = this.getHashValues(word);
 
 		// if any hash value isn't in our store, return false
-		for (let hash of values) {
+		for (const hash of values) {
 			if (!bitVector.getBit(this.store, hash)) {
 				return false;
 			}
