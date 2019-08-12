@@ -23,16 +23,10 @@ function QueryResult(props) {
 				)
 		}
 	});
+	const resultAlert = (<div className={alertClass} role="alert">{result}</div>)
 
 	// only show result if we have a string in query
-	if (queryString !== "") {
-		return (
-			<div className={alertClass} role="alert">
-				{result}
-			</div>
-		)
-	}
-	return null;
+	return (<div>{queryString !== "" && resultAlert}</div>);
 }
 
 export default QueryResult;

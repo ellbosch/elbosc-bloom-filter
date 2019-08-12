@@ -99,24 +99,17 @@ function Controls(props) {
 				<button onClick={e => createBloomFilter(e)} className="btn btn-primary btn-sm">Create</button>
 			</div>
 		</form>
-	);
+	)
 
-	if (errorString !== "") {
-		return (
-			<div>
-				{controls}
-				{error}
-			</div>
-		)
-	} else {
-		return (
-			<div>
-				{controls}
-			</div>
-		)
-	}
+	return (
+		<div>
+			{controls}
+			{errorString.length !== 0 && error}
+		</div>
+	)
 }
 
+// Checkbox component for algorithms to select
 function Checkbox(props) {
 	// hold value of checkbox in state
 	const [isChecked, setIsChecked] = props.state;
