@@ -11,6 +11,7 @@
   "dependencies": {
     "backend": "file:backend",
     "client": "file:client",
-    "concurrently": "^4.1.1"
+    "concurrently": "^4.1.1",
+    "farmhash": "^3.0.0"
   }
 }
