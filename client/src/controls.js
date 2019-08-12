@@ -63,7 +63,10 @@ function Controls(props) {
 			}
 
 		}
-		// check if an algorithm is selected
+		// check if an algorithm is not selected
+		if (!md5Checkbox && !sha1Checkbox && !sha256Checkbox) {
+			throw("Must select an algorithm!");
+		}
 
 	}
 
